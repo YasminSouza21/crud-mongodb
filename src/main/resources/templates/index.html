@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>CRUD</title>
+</head>
+<body>
+<aside class="links-tabelas">
+    <a th:href="@{/home(page = 'users')}">Usuários</a>
+    <a th:href="@{/home(page = 'tasks')}">Tarefas</a>
+    <a th:href="@{/home(page = 'products')}">Produtos</a>
+</aside>
+<div th:switch="${#strings.trim(param.page)}">
+    <div th:case="'users'">
+        <section class="crud_users">
+            <h1>Cadastro Usuários</h1>
+            <button class="btn-incluir-pessoa" data-bs-toggle="modal" data-bs-target="#modalIncluirUsuario"
+                    th:action="@{/user}">Incluir Pessoa
+            </button>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">Aniversário</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Excluir</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <th th:text="${user.id}" scope="row"></th>
+                    <td th:text="${user.name}"></td>
+                    <td th:text="${user.telephone}"></td>
+                    <td th:text="${user.birthday}"></td>
+                    <td>
+                        <button class="btn-editar"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalUsuario"
+                                th:data-id="${user.id}"
+                                th:data-name="${user.name}"
+                                th:data-telephone="${user.telephone}"
+                                th:data-birthday="${user.birthday}">Editar
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn-excluir" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal"
+                                th:data-id="${user.id}">Excluir
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal fade" id="modalIncluirUsuario" tabindex="-1" aria-labelledby="modalIncluirLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalIncluirLabel">Incluir Novo Usuário</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{users/save}" th:object="${userRequestCreateDTO}" method="post">
+                                <div class="mb-3">
+                                    <label for="id" class="form-label">Id: </label>
+                                    <input type="text" class="form-control" id="id" th:field="*{id}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Nome: </label>
+                                    <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="telephone" class="form-label">Telefone: </label>
+                                    <input type="tel" class="form-control" id="telephone" th:field="*{telephone}"
+                                           required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="birthday" class="form-label">Data de Aniversário: </label>
+                                    <input type="date" class="form-control" id="birthday" th:field="*{birthday}"
+                                           required>
+                                </div>
+                                <button type="submit" class="btn btn-success">Salvar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabel">Editar Usuário</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="formUsuer" method="post" th:action="@{/users/update}"
+                                  th:object="${userRequestUpdateDTO}">
+                                <div class="mb-3">
+                                    <label for="id_user_update" class="form-label">Id: </label>
+                                    <input type="number" class="form-control" id="id_user_update" th:field="*{id}"
+                                           name="id" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name_user_update" class="form-label">Nome: </label>
+                                    <input type="text" class="form-control" id="name_user_update" th:field="*{name}"
+                                           name="name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="telephone_user_update" class="form-label">Telefone: </label>
+                                    <input type="tel" class="form-control" id="telephone_user_update"
+                                           th:field="*{telephone}" name="telephone">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="birthday_user_update" class="form-label">Data de aniversário: </label>
+                                    <input type="date" class="form-control" id="birthday_user_update"
+                                           th:field="*{birthday}" name="birthday">
+                                </div>
+                                <button type="submit" class="btn btn-success">Salvar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Tem certeza de que deseja excluir este item?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <a id="confirmDeleteBtn" class="btn btn-danger">Excluir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div th:case="'tasks'">
+        <section class="crud_tasks">
+            <h1>Oi</h1>
+        </section>
+    </div>
+    <div th:case="'products'">
+        <section class="crud_products">
+            <h1>Cadastro Produtos</h1>
+            <button class="btn-incluir-produto" data-bs-toggle="modal" data-bs-target="#modalIncluirProduto"
+                    th:action="@{/product}">Incluir Produto
+            </button>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Preço</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Excluir</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <th th:text="${product.id}" scope="row"></th>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.quantity}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td>
+                        <button class="btn-editar-update"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalProduto"
+                                th:data-id="${product.id}"
+                                th:data-name="${product.name}"
+                                th:data-quantity="${product.quantity}"
+                                th:data-price="${product.price}">Editar
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn-excluir-update" data-bs-toggle="modal"
+                                data-bs-target="#deleteProductModal"
+                                th:data-id="${product.id}">Excluir
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal fade" id="modalIncluirProduto" tabindex="-1" aria-labelledby="modalIncluirProdutoLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalIncluirProdutoLabel">Incluir Novo Usuário</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{products/save}" th:object="${productRequestDTO}" method="post">
+                                <div class="mb-3">
+                                    <label for="id_product" class="form-label">Id: </label>
+                                    <input type="text" class="form-control" id="id_product" th:field="*{id}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name_product" class="form-label">Nome: </label>
+                                    <input type="text" class="form-control" id="name_product" th:field="*{name}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="quantity_product" class="form-label">Quantidade: </label>
+                                    <input type="number" class="form-control" id="quantity_product" th:field="*{quantity}"
+                                           required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="price_product" class="form-label">Preço: </label>
+                                    <input type="number" class="form-control" id="price_product" th:field="*{price}"
+                                           required>
+                                </div>
+                                <button type="submit" class="btn btn-success">Salvar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="modalProduto" tabindex="-1" aria-labelledby="modalProdutoLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalProdutoLabel">Editar Usuário</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="formProduct" method="post" th:action="@{/products/update}"
+                                  th:object="${productRequestUpdateDTO}">
+                                <div class="mb-3">
+                                    <label for="id_product_update" class="form-label">Id: </label>
+                                    <input type="number" class="form-control" id="id_product_update" th:field="*{id}"
+                                           name="id" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name_product_update" class="form-label">Nome: </label>
+                                    <input type="text" class="form-control" id="name_product_update" th:field="*{name}"
+                                           name="name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="quantity_product_update" class="form-label">Quantidade: </label>
+                                    <input type="number" class="form-control" id="quantity_product_update"
+                                           th:field="*{quantity}" name="quantity">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="price_product_update" class="form-label">Preço: </label>
+                                    <input type="number" class="form-control" id="price_product_update"
+                                           th:field="*{price}" name="price">
+                                </div>
+                                <button type="submit" class="btn btn-success">Salvar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteProductModalLabel">Confirmar Exclusão</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Tem certeza de que deseja excluir este item?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <a id="confirmDeleteDeleteBtn" class="btn btn-danger">Excluir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div th:case="*" style="padding: 30px">
+        <h2>Seja Bem-vindo</h2>
+        <h3>Escolha uma opção ao lado</h3>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script th:if="${successMessage}" th:inline="javascript">
+    Swal.fire("Sucesso!", [[${successMessage}]], "success");
+</script>
+<script>
+    let btn_incluir_pessoa = document.querySelector(".btn-incluir-pessoa");
+    let form_create = document.querySelector(".form-create");
+    let btn_close = document.querySelector(".btn-close");
+    let btn_excluir = document.querySelector(".btn-excluir");
+    let btn_editar = document.querySelectorAll(".btn-editar");
+    let form_update = document.querySelector(".form-update");
+
+
+     document.addEventListener("DOMContentLoaded", function () {
+        let botoesEditar = document.querySelectorAll(".btn-editar");
+
+        botoesEditar.forEach(function (botao) {
+            botao.addEventListener("click", function () {
+                let id = botao.getAttribute("data-id");
+                let nome = botao.getAttribute("data-name");
+                let tel = botao.getAttribute("data-telephone");
+                let aniversario = botao.getAttribute("data-birthday");
+
+
+                document.getElementById("id_user_update").value = id;
+                document.getElementById("name_user_update").value = nome;
+                document.getElementById("telephone_user_update").value = tel;
+                document.getElementById("birthday_user_update").value = aniversario;
+            });
+        });
+    });
+
+   document.querySelectorAll(".btn-excluir").forEach((botao) => {
+    botao.addEventListener("click", () => {
+        let id = botao.getAttribute("data-id");
+        let btn_delete_confirmed = document.getElementById("confirmDeleteBtn");
+
+        btn_delete_confirmed.addEventListener("click", (event) => {
+            console.log("clicado")
+            window.location.href = "users/delete/" + id;
+        });
+    });
+});
+
+        document.addEventListener("DOMContentLoaded", function () {
+        let botoesEditar = document.querySelectorAll(".btn-editar-update");
+
+        botoesEditar.forEach(function (botao) {
+            botao.addEventListener("click", function () {
+                let id = botao.getAttribute("data-id");
+                let nome = botao.getAttribute("data-name");
+                let quantidade = botao.getAttribute("data-quantity");
+                let preco = botao.getAttribute("data-price");
+
+                console.log(quantidade)
+
+
+                document.getElementById("id_product_update").value = id;
+                document.getElementById("name_product_update").value = nome;
+                document.getElementById("quantity_product_update").value = quantidade;
+                document.getElementById("price_product_update").value = preco;
+            });
+        });
+    });
+
+    document.querySelectorAll(".btn-excluir-update").forEach((botao) => {
+    botao.addEventListener("click", () => {
+        let id = botao.getAttribute("data-id");
+        let btn_delete_confirmed = document.getElementById("confirmDeleteDeleteBtn");
+
+        btn_delete_confirmed.addEventListener("click", (event) => {
+            console.log("clicado")
+            window.location.href = "products/delete/" + id;
+        });
+    });
+});
+
+</script>
+</body>
+</html>
