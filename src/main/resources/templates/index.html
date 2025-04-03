@@ -151,7 +151,133 @@
     </div>
     <div th:case="'tasks'">
         <section class="crud_tasks">
-            <h1>Oi</h1>
+            <h1>Cadastro Tarefas</h1>
+            <button class="btn-incluir-tarefa" data-bs-toggle="modal" data-bs-target="#modalIncluirTarefa"
+                    th:action="@{/tasks}">Incluir Tarefa
+            </button>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Data de fim</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Excluir</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="task : ${tasks}">
+                    <th th:text="${task.id}" scope="row"></th>
+                    <td th:text="${task.name}"></td>
+                    <td th:text="${task.status}"></td>
+                    <td th:text="${task.dayOfEnd}"></td>
+                    <td>
+                        <button class="btn-editar-tarefa"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalTarefa"
+                                th:data-id="${task.id}"
+                                th:data-name="${task.name}"
+                                th:data-status="${task.status}"
+                                th:data-dayOfEnd="${task.dayOfEnd}">Editar
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn-excluir-task" data-bs-toggle="modal"
+                                data-bs-target="#deleteTarefaModal"
+                                th:data-id="${task.id}">Excluir
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal fade" id="modalIncluirTarefa" tabindex="-1" aria-labelledby="modalIncluirTarefaLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalIncluirTarefaLabel">Incluir Novo Usuário</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{tasks/save}" th:object="${taskRequestDTO}" method="post">
+                                <div class="mb-3">
+                                    <label for="id_task" class="form-label">Id: </label>
+                                    <input type="text" class="form-control" id="id_task" th:field="*{id}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name_task" class="form-label">Nome: </label>
+                                    <input type="text" class="form-control" id="name_task" th:field="*{name}" required>
+                                </div>
+                                <select id="select-status" th:field="*{status}" class="form-select" aria-label="Default select example">
+                                    <option value="">Escolha o status da tarefa</option>
+                                    <option th:each="status : ${listStatus}" th:value="${status}" th:text="${status}"></option>
+                                </select>
+                                <div class="mb-3">
+                                    <label for="dayOfEnd_task" class="form-label">Data de fim: </label>
+                                    <input type="date" class="form-control" id="dayOfEnd_task" th:field="*{dayOfEnd}"
+                                           required>
+                                </div>
+                                <button type="submit" class="btn btn-success">Salvar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="modalTarefa" tabindex="-1" aria-labelledby="modalTarefaLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTarefaLabel">Editar Usuário</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="formTarefa" method="post" th:action="@{/tasks/update}"
+                                  th:object="${taskRequestUpdateDTO}">
+                                <div class="mb-3">
+                                    <label for="id_task_update" class="form-label">Id: </label>
+                                    <input type="number" class="form-control" id="id_task_update" th:field="*{id}"
+                                           name="id" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name_task_update" class="form-label">Nome: </label>
+                                    <input type="text" class="form-control" id="name_task_update" th:field="*{name}"
+                                           name="name">
+                                </div>
+                                <select th:field="*{status}" class="form-select" aria-label="Default select example">
+                                    <option value="">Escolha o status da tarefa</option>
+                                    <option th:each="status : ${listStatus}" th:value="${status}" th:text="${status}"></option>
+                                </select>
+                                <div class="mb-3">
+                                    <label for="dayOfEnd_task_update" class="form-label">Dia de fim: </label>
+                                    <input type="date" class="form-control" id="dayOfEnd_task_update"
+                                           th:field="*{dayOfEnd}" name="status">
+                                </div>
+                                <button type="submit" class="btn btn-success">Salvar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="deletTarefaModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteTarefaModalLabel">Confirmar Exclusão</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Tem certeza de que deseja excluir este item?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <a id="confirmDeleteTarefaBtn" class="btn btn-danger">Excluir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
     <div th:case="'products'">
@@ -212,11 +338,13 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="name_product" class="form-label">Nome: </label>
-                                    <input type="text" class="form-control" id="name_product" th:field="*{name}" required>
+                                    <input type="text" class="form-control" id="name_product" th:field="*{name}"
+                                           required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="quantity_product" class="form-label">Quantidade: </label>
-                                    <input type="number" class="form-control" id="quantity_product" th:field="*{quantity}"
+                                    <input type="number" class="form-control" id="quantity_product"
+                                           th:field="*{quantity}"
                                            required>
                                 </div>
                                 <div class="mb-3">
@@ -230,7 +358,8 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="modalProduto" tabindex="-1" aria-labelledby="modalProdutoLabel" aria-hidden="true">
+            <div class="modal fade" id="modalProduto" tabindex="-1" aria-labelledby="modalProdutoLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -367,6 +496,37 @@
         btn_delete_confirmed.addEventListener("click", (event) => {
             console.log("clicado")
             window.location.href = "products/delete/" + id;
+        });
+    });
+});
+
+        document.addEventListener("DOMContentLoaded", function () {
+        let botoesEditar = document.querySelectorAll(".btn-editar-tarefa");
+
+        botoesEditar.forEach(function (botao) {
+            botao.addEventListener("click", function () {
+                let id = botao.getAttribute("data-id");
+                let nome = botao.getAttribute("data-name");
+                let status = botao.getAttribute("data-status");
+                let dayOfEnd = botao.getAttribute("data-dayOfEnd");
+
+
+                document.getElementById("id_task_update").value = id;
+                document.getElementById("name_task_update").value = nome;
+                document.getElementById("status_task_update").value = status;
+                document.getElementById("dayOfEnd_task_update").value = dayOfEnd;
+            });
+        });
+    });
+
+    document.querySelectorAll(".btn-excluir-task").forEach((botao) => {
+    botao.addEventListener("click", () => {
+        let id = botao.getAttribute("data-id");
+        let btn_delete_confirmed = document.getElementById("confirmDeleteTaskBtn");
+
+        btn_delete_confirmed.addEventListener("click", (event) => {
+            console.log("clicado")
+            window.location.href = "tasks/delete/" + id;
         });
     });
 });
