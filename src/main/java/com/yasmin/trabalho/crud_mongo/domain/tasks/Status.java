@@ -1,8 +1,8 @@
 package com.yasmin.trabalho.crud_mongo.domain.tasks;
 
 public enum Status {
-    PENDENTE("pendente"),
-    FINALIZADO("finalizado");
+    PENDENTE("Pendente"),
+    FINALIZADO("Finalizado");
 
     private String statusMessage;
 
