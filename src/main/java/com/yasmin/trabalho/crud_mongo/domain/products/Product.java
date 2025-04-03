@@ -37,4 +37,6 @@ public class Product {
         this.quantity = productRequestUpdateDTO.quantity();
         this.price = productRequestUpdateDTO.price();
     }
+
+
 }

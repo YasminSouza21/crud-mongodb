@@ -24,6 +24,8 @@ public class User {
     private String telephone;
     private LocalDate birthday;
 
+
+
     public User(UserRequestCreateDTO userRequestDTO) {
         this.id = userRequestDTO.id();
         this.name = userRequestDTO.name();
@@ -37,4 +39,6 @@ public class User {
         this.telephone = userRequestDTO.telephone();
         this.birthday = LocalDate.parse(userRequestDTO.birthday());
     }
+
+
 }

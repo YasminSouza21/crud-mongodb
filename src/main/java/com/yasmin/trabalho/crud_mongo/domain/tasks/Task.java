@@ -40,4 +40,6 @@ public class Task {
         this.status = taskRequestUpdateDTO.status();
         this.dayOfEnd = LocalDate.parse(taskRequestUpdateDTO.dayOfEnd());
     }
+
 }
+
