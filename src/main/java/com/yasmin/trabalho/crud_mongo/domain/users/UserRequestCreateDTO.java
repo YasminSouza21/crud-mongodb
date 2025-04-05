@@ -1,4 +1,4 @@
-package com.yasmin.trabalho.crud_mongo.dtos;
+package com.yasmin.trabalho.crud_mongo.domain.users;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;

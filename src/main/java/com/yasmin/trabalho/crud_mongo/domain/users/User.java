@@ -1,7 +1,5 @@
 package com.yasmin.trabalho.crud_mongo.domain.users;
 
-import com.yasmin.trabalho.crud_mongo.dtos.UserRequestCreateDTO;
-import com.yasmin.trabalho.crud_mongo.dtos.UserRequestUpdateDTO;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;

@@ -1,13 +1,14 @@
 package com.yasmin.trabalho.crud_mongo.services;
 
 import com.yasmin.trabalho.crud_mongo.domain.users.User;
-import com.yasmin.trabalho.crud_mongo.dtos.UserRequestCreateDTO;
-import com.yasmin.trabalho.crud_mongo.dtos.UserRequestUpdateDTO;
+import com.yasmin.trabalho.crud_mongo.domain.users.UserRequestCreateDTO;
+import com.yasmin.trabalho.crud_mongo.domain.users.UserRequestUpdateDTO;
 import com.yasmin.trabalho.crud_mongo.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -30,20 +31,20 @@ public class UserService {
         return userRepository.findTopByOrderByIdDesc();
     }
 
-    public User findUserById(Long id){
-        return userRepository.findById(id);
-    }
-
     public void updateUser(UserRequestUpdateDTO userRequestUpdateDTO) {
 
-        User user = userRepository.findById(userRequestUpdateDTO.id());
+        Optional<User> user = userRepository.findById(userRequestUpdateDTO.id());
 
-        user.setId(userRequestUpdateDTO.id());
-        user.setName(userRequestUpdateDTO.name());
-        user.setTelephone(userRequestUpdateDTO.telephone());
-        user.setBirthday(LocalDate.parse(userRequestUpdateDTO.birthday()));
+        if(user.isPresent()){
+            User existingUser = user.get();
 
-        userRepository.save(user);
+            existingUser.setId(userRequestUpdateDTO.id());
+            existingUser.setName(userRequestUpdateDTO.name());
+            existingUser.setTelephone(userRequestUpdateDTO.telephone());
+            existingUser.setBirthday(LocalDate.parse(userRequestUpdateDTO.birthday()));
+
+            userRepository.save(existingUser);
+        }
 
     }
 

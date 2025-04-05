@@ -1,9 +1,8 @@
 package com.yasmin.trabalho.crud_mongo.services;
 
-import com.yasmin.trabalho.crud_mongo.domain.tasks.Status;
 import com.yasmin.trabalho.crud_mongo.domain.tasks.Task;
-import com.yasmin.trabalho.crud_mongo.dtos.TaskRequestDTO;
-import com.yasmin.trabalho.crud_mongo.dtos.TaskRequestUpdateDTO;
+import com.yasmin.trabalho.crud_mongo.domain.tasks.TaskRequestDTO;
+import com.yasmin.trabalho.crud_mongo.domain.tasks.TaskRequestUpdateDTO;
 import com.yasmin.trabalho.crud_mongo.repositories.TaskRepository;
 import org.springframework.stereotype.Service;
 

@@ -23,9 +23,7 @@ public class HomeController {
     @GetMapping("")
     public ModelAndView home(@RequestParam(value = "page", required = false, defaultValue = "") String page) {
         ModelAndView mv = new ModelAndView("index");
-
-        System.out.println(page);
-
+        
         mv.addObject("page", page);
 
         switch (page) {

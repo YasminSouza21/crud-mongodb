@@ -261,7 +261,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="deletTarefaModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+            <div class="modal fade" id="deleteTarefaModal" tabindex="-1" aria-labelledby="deleteTarefaModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -523,7 +523,7 @@
     document.querySelectorAll(".btn-excluir-task").forEach((botao) => {
     botao.addEventListener("click", () => {
         let id = botao.getAttribute("data-id");
-        let btn_delete_confirmed = document.getElementById("confirmDeleteTaskBtn");
+        let btn_delete_confirmed = document.getElementById("confirmDeleteTarefaBtn");
 
         btn_delete_confirmed.addEventListener("click", (event) => {
             console.log("clicado")

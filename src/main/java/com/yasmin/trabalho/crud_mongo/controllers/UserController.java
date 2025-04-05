@@ -1,8 +1,8 @@
 package com.yasmin.trabalho.crud_mongo.controllers;
 
 import com.yasmin.trabalho.crud_mongo.domain.users.User;
-import com.yasmin.trabalho.crud_mongo.dtos.UserRequestCreateDTO;
-import com.yasmin.trabalho.crud_mongo.dtos.UserRequestUpdateDTO;
+import com.yasmin.trabalho.crud_mongo.domain.users.UserRequestCreateDTO;
+import com.yasmin.trabalho.crud_mongo.domain.users.UserRequestUpdateDTO;
 import com.yasmin.trabalho.crud_mongo.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

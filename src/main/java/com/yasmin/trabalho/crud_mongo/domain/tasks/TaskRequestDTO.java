@@ -1,6 +1,4 @@
-package com.yasmin.trabalho.crud_mongo.dtos;
-
-import com.yasmin.trabalho.crud_mongo.domain.tasks.Status;
+package com.yasmin.trabalho.crud_mongo.domain.tasks;
 
 import java.time.LocalDate;
 

@@ -1,8 +1,8 @@
 package com.yasmin.trabalho.crud_mongo.services;
 
 import com.yasmin.trabalho.crud_mongo.domain.products.Product;
-import com.yasmin.trabalho.crud_mongo.dtos.ProductRequestDTO;
-import com.yasmin.trabalho.crud_mongo.dtos.ProductRequestUpdateDTO;
+import com.yasmin.trabalho.crud_mongo.domain.products.ProductRequestDTO;
+import com.yasmin.trabalho.crud_mongo.domain.products.ProductRequestUpdateDTO;
 import com.yasmin.trabalho.crud_mongo.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 

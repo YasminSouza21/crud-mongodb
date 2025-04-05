@@ -1,8 +1,5 @@
 package com.yasmin.trabalho.crud_mongo.domain.products;
 
-import com.yasmin.trabalho.crud_mongo.dtos.ProductRequestDTO;
-import com.yasmin.trabalho.crud_mongo.dtos.ProductRequestUpdateDTO;
-import com.yasmin.trabalho.crud_mongo.dtos.TaskRequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
